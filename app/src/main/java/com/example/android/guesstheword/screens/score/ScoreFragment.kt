@@ -17,6 +17,7 @@
 package com.example.android.guesstheword.screens.score
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +34,7 @@ import com.example.android.guesstheword.databinding.ScoreFragmentBinding
  * Fragment where the final score is shown, after the game is over
  */
 class ScoreFragment : Fragment() {
-
+    val className = this.javaClass.simpleName
     private lateinit var viewModel: ScoreViewModel
     private lateinit var viewModelFactory: ScoreViewModelFactory
 
@@ -55,16 +56,13 @@ class ScoreFragment : Fragment() {
         val scoreFragmentArgs by navArgs<ScoreFragmentArgs>()
         binding.scoreText.text = scoreFragmentArgs.score.toString()
 
-
+        Log.i(className, "ScoreFragment Created, args=" + scoreFragmentArgs.score)
         viewModelFactory = ScoreViewModelFactory(scoreFragmentArgs.score)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(ScoreViewModel::class.java)
 
         binding.scoreViewModel = viewModel
-
-        viewModel.score.observe(this, Observer { newScore ->
-            binding.scoreText.text = newScore.toString()
-        })
+        binding.lifecycleOwner = this
 
         // Navigates back to title when button is pressed
         viewModel.eventPlayAgain.observe(this, Observer { playAgain ->

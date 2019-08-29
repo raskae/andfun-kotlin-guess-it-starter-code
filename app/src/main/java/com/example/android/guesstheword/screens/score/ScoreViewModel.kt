@@ -9,10 +9,6 @@ class ScoreViewModel(private val finalScore: Int) : ViewModel() {
 
     val className: String = this.javaClass.simpleName
 
-    init {
-        Log.i(className, "Created ScoreViewModel!")
-    }
-
     private val _score = MutableLiveData<Int>()
     val score: LiveData<Int>
         get() = _score
@@ -21,6 +17,10 @@ class ScoreViewModel(private val finalScore: Int) : ViewModel() {
     val eventPlayAgain: LiveData<Boolean>
         get() = _eventPlayAgain
 
+    init {
+        Log.i(className, "Created ScoreViewModel!")
+        _score.value = finalScore
+    }
 
     fun onPlayAgain() {
         _eventPlayAgain.value = true
